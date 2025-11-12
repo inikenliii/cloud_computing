@@ -5,8 +5,6 @@ namespace App\Mail;
 use App\Models\Registration;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class RegistrationConfirmation extends Mailable
@@ -26,32 +24,16 @@ class RegistrationConfirmation extends Mailable
     }
 
     /**
-     * Get the message envelope.
+     * Build the message.
      */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Cloud Computing 2025 - Registration Confirmation',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'emails.registration-confirmation',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->subject('Cloud Computing 2025 - Registration Confirmation')
+                    ->from('inikenli@kenley.team6.my.id', 'Cloud Computing 2025') // ✅ pastikan sama dengan MAIL_FROM di .env
+                    ->view('emails.registration-confirmation')
+                    ->with([
+                        'registration' => $this->registration,
+                        'confirmationUrl' => $this->confirmationUrl,
+                    ]);
     }
 }

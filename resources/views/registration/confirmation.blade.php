@@ -1,76 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Registration Confirmation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
-        }
-        .header {
-            text-align: center;
-            color: #4f46e5;
-        }
-        .button {
-            display: inline-block;
-            background-color: #16a34a;
-            color: white;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #888;
-            font-size: 12px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2 class="header">🎓 Cloud Computing 2025</h2>
-        <p>Hello <strong>{{ $registration->full_name }}</strong>!</p>
-        <p>
-            Congratulations! You have successfully registered for
-            <strong>Cloud Computing 2025</strong>.
+@extends('layouts.app')
+
+@section('content')
+<div class="w-full max-w-2xl">
+    <div class="bg-white rounded-lg shadow-lg p-8">
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <div class="flex justify-center mb-3">
+                <span class="text-4xl">🎓</span>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-800">Cloud Computing 2025</h1>
+            <p class="text-gray-500 text-sm">Registration Confirmation</p>
+        </div>
+
+        <!-- Greeting -->
+        <div class="mb-6">
+            <p class="text-gray-700">Hello <strong>{{ $registration->full_name }}</strong>!</p>
+            <p class="text-gray-600 mt-2">
+                Congratulations! You have successfully registered for <strong>Cloud Computing 2025</strong>. 
+                We are excited to have you join our program!
+            </p>
+        </div>
+
+        <!-- Registration Details -->
+        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+            <h2 class="font-semibold text-gray-700 mb-3 flex items-center">
+                <span class="mr-2">📋</span> Registration Details
+            </h2>
+            <div class="space-y-2 text-sm">
+                <div class="flex">
+                    <span class="text-gray-600 w-32">Full Name:</span>
+                    <span class="text-gray-800 font-medium">{{ $registration->full_name }}</span>
+                </div>
+                <div class="flex">
+                    <span class="text-gray-600 w-32">Email:</span>
+                    <span class="text-blue-600">{{ $registration->student_email }}</span>
+                </div>
+                <div class="flex">
+                    <span class="text-gray-600 w-32">Birthdate:</span>
+                    <span class="text-gray-800">{{ $registration->birthdate->format('F j, Y') }}</span>
+                </div>
+                <div class="flex">
+                    <span class="text-gray-600 w-32">Course:</span>
+                    <span class="text-gray-800 font-medium">Cloud Computing 2025</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instruction -->
+        <p class="text-gray-600 text-sm mb-6">
+            To complete your registration and confirm your spot in the program, please click the button below:
         </p>
 
-        <p><strong>📋 Registration Details</strong></p>
-        <ul>
-            <li><strong>Full Name:</strong> {{ $registration->full_name }}</li>
-            <li><strong>Email:</strong> {{ $registration->student_email }}</li>
-            <li><strong>Birthdate:</strong> {{ $registration->birthdate->format('F j, Y') }}</li>
-        </ul>
+        <!-- Confirm Button -->
+        <form action="{{ route('registration.confirm', $registration->id) }}" method="POST">
+            @csrf
+            <button 
+                type="submit"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-md transition duration-200 flex items-center justify-center"
+            >
+                <span class="mr-2">✓</span> Confirm My Registration
+            </button>
+        </form>
 
-        <p>Click the button below to confirm your registration:</p>
-
-        <p style="text-align:center;">
-            <a href="{{ $confirmationUrl }}" class="button">Confirm My Registration</a>
+        <!-- Warning -->
+        <p class="text-amber-600 text-sm mt-4 text-center">
+            <strong>Important:</strong> Please confirm your registration within 7 days to secure your spot in the program.
         </p>
 
-        <p style="font-size: 14px; color: #666;">
-            If the button doesn't work, copy this link into your browser:<br>
-            <a href="{{ $confirmationUrl }}">{{ $confirmationUrl }}</a>
-        </p>
-
-        <div class="footer">
-            <p>Thank you for choosing Cloud Computing 2025!</p>
-            <p>Need help? Contact <a href="mailto:support@cloudcomputing.com">support@cloudcomputing.com</a></p>
+        <!-- Footer -->
+        <div class="text-center mt-6 pt-6 border-t border-gray-200">
+            <p class="text-gray-500 text-sm">Thank you for choosing Cloud Computing 2025!</p>
+            <p class="text-gray-400 text-xs mt-2">
+                If you have any questions, please contact us at 
+                <a href="mailto:support@cloudcomputing.com" class="text-blue-600 hover:underline">
+                    support@cloudcomputing.com
+                </a>
+            </p>
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection
